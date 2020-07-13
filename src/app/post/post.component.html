@@ -1,0 +1,52 @@
+<div>
+    <div [hidden] = "post == null" class="mx-auto" style="width: 600px;">
+        <div class="card border-dark mb-3" style="max-width: 38rem;"> 
+            <div class="card-header" style="background-color:#f7e4ec">Posted by {{post?.author.userName}} on {{post?.creationDate | date: 'dd/MM/yyyy'}} +{{comments?.length}}</div>
+            <div class="card-body text-dark">
+              <h5 class="card-title">{{post?.title}}</h5>
+              <p class="card-text">{{post?.text}}</p>
+            </div>
+        </div>
+    </div>
+    <div [hidden]="post != null" class="spinner-grow text-secondary" style="width: 5rem; height: 5rem;" role="status">
+        <span class="sr-only"> Loading... </span>
+    </div>
+</div>
+
+
+<div *ngIf="!commentFormInvisible; then thenBlock"></div>
+<ng-template #thenBlock>
+<div  class="mx-auto" style="width: 600px;">
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="commentForm">
+        <div class="mx-auto">
+          <textarea class="form-control" formControlName="text" id="text" rows="3" placeholder="Type something..."></textarea>
+          <button [disabled]="submitted" class="btn btn-dark " (click)="onSubmit()" type="submit"> Post 
+            <span class="spinner-border spinner-border-sm"  role="status" [hidden]="!submitted"></span> </button>
+          <div class="form-check">
+            <input class="form-check-input " formControlName="anon" type="checkbox" value="" id="anon">
+            <label class="form-check-label " for="anon">Anonymous</label>
+          </div> 
+        </div>
+      </form>
+      </div>
+  </div>
+</div>
+</ng-template>
+
+<div class="mx-auto" style="width: 600px;">
+  <div *ngFor="let comment of comments; index as i; ">
+    <div class="card border-dark mb-3" style="max-width: 38rem;"> 
+      <div class="card-header" style="background-color:#f7e4ec">Posted by {{comment.author.userName}}, at {{comment.creationDate | date: 'dd/MM/yyyy'}}</div>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <button [hidden]="comment?.author.id != user?.id" (click)="deleteComment(comment.id) "type="button" class="btn btn-outline-success btn-sm">Edit</button>
+        <button [hidden]="comment?.author.id != user?.id" (click)="deleteComment(comment.id) "type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+      </div>
+      <div class="card-body text-dark">
+        <p class="card-text">{{comment.text}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+

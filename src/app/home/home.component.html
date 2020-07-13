@@ -1,0 +1,48 @@
+<div *ngIf="!postFormInvisible; then thenBlock"></div>
+<ng-template #thenBlock>
+<div  class="mx-auto" style="width: 600px;">
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="postForm">
+        <div class="mx-auto">
+          <label for="title"> Want to discuss something? Post it! ^__^ </label>
+          <input  class="form-control" formControlName="title" id="title" aria-describedby="Title" placeholder="Title">
+          <textarea class="form-control" formControlName="text" id="text" rows="3" placeholder="Type something..."></textarea>
+          <button [disabled]="submitted" class="btn btn-dark " (click)="onSubmit()" type="submit"> Post 
+            <span class="spinner-border spinner-border-sm"  role="status" [hidden]="!submitted"></span> </button>
+          <div class="form-check">
+            <input class="form-check-input " formControlName="anon" type="checkbox" value="" id="anon">
+            <label class="form-check-label " for="anon">Anonymous</label>
+          </div> 
+        </div>
+      </form>
+      </div>
+  </div>
+</div>
+</ng-template>
+<div class="mx-auto" style="width: 600px;">
+  <div class="card text-white bg-dark mb-3" style="max-width: 38rem;">
+    <div class="card-header">Sort</div>
+    <div class="card-body">
+      <h5 class="card-title">lower Upper</h5>
+    </div>
+  </div>
+</div>
+
+<div class="mx-auto" style="width: 600px;">
+  <div *ngFor="let post of posts; index as i; ">
+      <div  class="card border-dark mb-3" style="max-width: 38rem;  cursor: pointer;"> 
+        <div class="card-header" style="background-color:#f7e4ec">
+          <div (click)="redirectPost(post.id)">Posted by {{post.author.userName}} on {{post.creationDate | date: 'dd/MM/yyyy'}} +{{post.comments.length}}</div>
+        </div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <button [hidden]="post?.author.id != user?.id" (click)="updatePost(post)"type="button" class="btn btn-outline-success btn-sm">Edit</button>
+          <button [hidden]="post?.author.id != user?.id" (click)="deletePost(post.id) "type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+        </div>
+        <div (click)="redirectPost(post.id)" class="card-body text-dark">
+          <h5 class="card-title">{{post.title}}</h5>
+          <p class="card-text">{{post.text}}</p>
+        </div>
+      </div>
+  </div>
+</div>

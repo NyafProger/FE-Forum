@@ -1,0 +1,32 @@
+
+<div class="mx-auto" style="width: 40%;">
+   <div class="card">
+      <h5 style="background-color:#f7e4ec" class="card-header"> Registration </h5>
+      <div class="card-body">
+         <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
+            <div class="form-group">
+               <label for="userName"> User Name </label>
+               <input type="userName" formControlName = "userName" class="form-control" id="userName">
+            </div>
+            <div class="form-group">
+               <label for="firstName"> First Name </label>
+               <input type="firstName" formControlName = "firstName" class="form-control" id="firstName">
+            </div>
+            <div class="form-group">
+               <label for="secondName"> Second Name </label>
+               <input type="secondName" formControlName = "secondName" class="form-control" id="secondName">
+            </div>
+            <div class="form-group">
+               <label for="email"> Email address </label>
+               <input type="email" formControlName = "email" class="form-control" id="email" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+               <label for="password"> Password </label>
+               <input type="password" formControlName = "password" class="form-control" id="password">
+            </div>
+               <button type="submit" [disabled]="submitted" class="btn btn-dark"> Submit 
+                  <span class="spinner-border spinner-border-sm"  role="status" [hidden]="!submitted"></span> </button>
+         </form>
+      </div>
+   </div>
+</div>
