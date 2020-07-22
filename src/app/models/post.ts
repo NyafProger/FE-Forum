@@ -8,7 +8,7 @@ export interface Post {
     text: string,
     author: User,
     anonymous: boolean,
-    comments: Comment,
+    comments: Comment[],
     creationDate:string
 }
 

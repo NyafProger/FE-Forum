@@ -7,5 +7,5 @@ export interface User {
     firstName:string,
     secondName:string,
     pictureUrl:string,
-    posts: Post
+    role:string
 }

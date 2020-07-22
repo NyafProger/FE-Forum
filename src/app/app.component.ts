@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 import { User } from './models/user';
+import { AccountService } from './services/accountService';
+import { NotifierService } from 'angular-notifier';
 
 
 @Component({
@@ -13,11 +15,39 @@ export class AppComponent {
 
   static user:User = null;
   static userLoggedIn: boolean = false;
+  notAdmin = true;
 
-  constructor(private router: Router){}
+  constructor(private router: Router,
+     private accountService: AccountService,
+      private notifier:NotifierService){
+
+    if (localStorage.getItem("token")!= null){
+      this.accountService.getCurrentUser().subscribe(result => {
+        AppComponent.user = result; 
+        AppComponent.userLoggedIn = true;
+        console.log("User was identyfied");
+        if (AppComponent.user.role == "User")
+        {
+          this.notAdmin = true;
+        }
+        else{
+          this.notAdmin = false;
+        }
+      }, 
+        error => {
+          AppComponent.user = null; 
+          console.log(error);
+          localStorage.removeItem("token")
+          router.navigate(["home"]);
+        });  
+    }
+  }
 
   redirectToRegister() {
     this.router.navigate(['./register']);
+  }
+  redirectToAdmin(){
+    this.router.navigate(["./admin"]);
   }
   getUser(){
     return AppComponent.user;

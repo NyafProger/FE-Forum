@@ -7,6 +7,7 @@ import { AccountService } from '../services/accountService';
 import { AppComponent } from '../app.component';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
+import { VirtualTimeScheduler } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
   postFormInvisible: boolean = true;
   posts: Post[];
   user: User;
+  inversedList: boolean = true;
   submitted:boolean = false;
   edited:boolean = false
   idEdited: number = 0;
@@ -31,7 +33,7 @@ export class HomeComponent implements OnInit {
         AppComponent.user = result; 
         AppComponent.userLoggedIn = true;
         this.postFormInvisible = false;
-        this.postForm = builder.group({id:0,title:"", text:"", anon: false, authorId: this.user.id});
+        this.postForm = builder.group({id:0,title:"", text:"", anonymous: false, authorId: this.user.id});
         console.log("User was identyfied");
       }, 
         error => {
@@ -44,7 +46,14 @@ export class HomeComponent implements OnInit {
     }
     this.updatePostList();
   }
+  changeOrder()
+  {
+    this.submitted = true;
+    this.inversedList = !this.inversedList;
 
+    this.posts = this.posts.reverse();
+    this.submitted = false;
+  }
   updatePostList(){
     this.postService.getAllPosts().subscribe(result=>
       {this.posts = result; console.log(result);
@@ -54,23 +63,28 @@ export class HomeComponent implements OnInit {
       
       })
   }
-
-  updatePost(post: Post){
+  updatePost(){
+    this.submitted = true;
+    this.postService.updatePost(this.postForm.value).subscribe(result =>{
+      this.updatePostList();
+      this.submitted = false;
+      this.notifier.notify("success","Post was edited")
+      this.edited = false;
+      this.postForm = this.builder.group({id:0,title:"", text:"", anonymous: false, authorId: this.user.id});
+      },
+      err =>{
+      this.submitted = false;
+      this.edited = false;
+      this.notifier.notify("error","Oppss, something goes wrong. Try again")
+      })
+  }
+  editPost(post: Post){
     this.edited = true;
     this.postForm.controls["id"].setValue(post.id);
     this.postForm.controls["title"].setValue(post.title);
     this.postForm.controls["text"].setValue(post.text);
     this.postForm.controls["authorId"].setValue(post.author.id);
-    this.postForm.controls["anon"].setValue(post.anonymous);
-    // this.postService.updatePost(this.postForm.value).subscribe(result =>{
-    //   this.updatePostList();
-    //   this.edited = false;
-    //   this.notifier.notify("success","Post was edited")
-    // },
-    // err =>{
-    //   this.edited = false;
-    //   this.notifier.notify("error","Oppss, something goes wrong. Try again")
-    // })
+    this.postForm.controls["anonymous"].setValue(post.anonymous);
   }
 
   deletePost(id:number){
@@ -90,14 +104,20 @@ export class HomeComponent implements OnInit {
     this.router.navigate(["/post/"+id]);
   }
   
+  
   onSubmit(){
     this.submitted = true;
     this.postForm.controls["id"].setValue(0);
     this.postService.createPost(this.postForm.value).subscribe(result => {
       console.log(result);
       this.submitted = false;
-      this.posts.push(result);
-      this.notifier.notify("success","Post is published")
+      if(this.inversedList){this.posts.unshift(result);}
+      else{this.posts.push(result);}
+      
+      this.notifier.notify("success","Post is published");
+      this.postForm.controls["title"].setValue("");
+      this.postForm.controls["text"].setValue("");
+      this.postForm.controls["anonymous"].setValue(false);
     },
     err=>{
       this.submitted=false;

@@ -1,6 +1,8 @@
 <nav class="navbar navbar-light " style="background-color:#f7e4ec">
   <a style="color:#630e33; cursor: pointer;" (click) ="redirectToHome()" class="navbar-brand">
-    <strong> Rebbit </strong></a>
+    <strong> Rebbit </strong>
+  </a>
+  <a [hidden]="notAdmin" style="color:#630e33; cursor: pointer;"  class="nav-link" (click)="redirectToAdmin()">Admin Panel</a>
   <form class="form-inline" >
     <input size="50" class="form-control mr-sm-2" type="search" placeholder="Search">
     <button class="btn btn-outline-dark  mr-sm-2" style="background-color:#f7e4ec" type="submit"> Search </button>

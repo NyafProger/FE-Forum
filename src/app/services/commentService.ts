@@ -19,7 +19,7 @@ export class CommentService{
             console.log("Token added to headres");
             headers = new HttpHeaders({"Authorization": "Bearer "+localStorage.getItem("token")});            
         }
-        headers.append('Access-Control-Allow-Headers', 'Content-Type');
+        headers.append('Access-Control-Allow-Headers', '*');
         headers.append('Content-Type', 'application/json');
         headers.append('Access-Control-Allow-Methods', '*');
         headers.append('Access-Control-Allow-Origin', '*');
@@ -27,9 +27,9 @@ export class CommentService{
         return headers;
     }
 
-    getAllComments():Observable<Comment[]>{
+    getCommentsByPost(postId):Observable<Comment[]>{
         
-        return this.http.get<Comment[]>(this.apiUrl+"/comment");
+        return this.http.get<Comment[]>(this.apiUrl+"/post/"+postId+"/comments");
     }
 
     createComment(commentToCreate:any):Observable<Comment>{
@@ -37,5 +37,8 @@ export class CommentService{
     }
     deleteComment(id:number){
         return this.http.delete(this.apiUrl+"/comment/"+id, {headers:this.createHeaders()});
+    }
+    updateComment(commentToUpdate:any):Observable<Comment>{
+        return this.http.put<Comment>(this.apiUrl+"/comment", commentToUpdate, {headers:this.createHeaders()});
     }
 }

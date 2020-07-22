@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { PostService } from './services/postService';
 import { NotifierModule } from "angular-notifier";
 import { PostComponent } from './post/post.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { PostComponent } from './post/post.component';
     RegisterComponent,
     HomeComponent,
     PostComponent,
+    AdminComponent,
   ],
   imports: [
     NotifierModule,

@@ -19,7 +19,7 @@ export class AccountService{
             console.log("Token added to headres");
             headers = new HttpHeaders({"Authorization": "Bearer "+localStorage.getItem("token")});            
         }
-        headers.append('Access-Control-Allow-Headers', 'Content-Type');
+        headers.append('Access-Control-Allow-Headers', '*');
         headers.append('Content-Type', 'application/json');
         headers.append('Access-Control-Allow-Methods', '*');
         headers.append('Access-Control-Allow-Origin', '*');
