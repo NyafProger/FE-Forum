@@ -29,7 +29,11 @@
     <div class="card-header">Sort</div>
     <div class="card-body">
       <div class="form-check">
-        <button [disabled]="submitted" class="btn btn-dark " (click)="changeOrder()" type="order"> up
+        <button [disabled]="submitted"  class="btn btn-dark " (click)="changeOrder()" type="order">
+          <div *ngIf="descendingSort; else elseBlockSort"> 
+          <p>Ascending By Date</p>
+        </div>
+        <ng-template #elseBlockSort><p>Descending By Date</p></ng-template>
           <span class="spinner-border spinner-border-sm"  role="status" [hidden]="!submitted"></span> </button>
       </div> 
     </div>

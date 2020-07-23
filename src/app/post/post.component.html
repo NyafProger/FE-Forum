@@ -46,7 +46,7 @@
 <div class="mx-auto" style="width: 600px;">
   <div *ngFor="let comment of comments; index as i; ">
     <div class="card border-dark mb-3" style="max-width: 38rem;"> 
-      <div class="card-header" style="background-color:#f7e4ec">
+      <div class="card-header" style="background-color:#CCD2DE">
         <p>Posted by 
           <b [hidden]="comment.anonymous"> {{comment.author.userName}} </b>
           <b [hidden]="!comment.anonymous">Anonymous</b>

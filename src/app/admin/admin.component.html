@@ -10,9 +10,8 @@
                 <div class="card-header"  style="background-color:#cedfed">
                     Comments
                 </div>
-                <div class="card-body">
+                <div class="card-body overflow-auto" style="height: 30rem;">
                     <div class="card" *ngFor="let comment of comments; index as i;">
-                        
                         <div class="card-header" style="background-color:#ead9ff">
                             Title
                         </div>
@@ -24,13 +23,12 @@
                 </div>
             </div>
         </div>
-        
         <div class="col">
             <div class="card">
                 <div class="card-header"  style="background-color:#cedfed">
                     Posts
                 </div>
-                <div class="card-body">
+                <div class="card-body overflow-auto" style="height: 30rem;">
                     <div class="card" *ngFor="let post of posts; index as i;">
                         <div class="card-header" style="background-color:#ead9ff">
                             {{post?.title}}
@@ -43,18 +41,19 @@
                 </div>
             </div>
         </div>
-
+    </div>
+    <div [hidden]="!isAdmin()" class="row">
         <div class="col">
             <div class="card">
                 <div class="card-header"  style="background-color:#cedfed">
                     Users
                 </div>
-                <div class="card-body">
+                <div class="card-body overflow-auto" style="height: 30rem;">
                     <div class="card" *ngFor="let user of users; index as i;">
                         <div class="card-header" style="background-color:#ead9ff">
-                            Title
+                            User
                         </div>
-                        <button (click)="assignToRole(user?.id, user?.userName,'Moderator')" type="button" class="btn btn-outline-success btn-sm">Raise</button>
+                        <button  (click)="assignToRole(user?.id, user?.userName,'Moderator')" type="button" class="btn btn-outline-success btn-sm">Raise</button>
                         <div class="card-body">
                             {{user?.userName}}   
                         </div>
@@ -68,10 +67,11 @@
                 <div class="card-header"  style="background-color:#cedfed">
                     Moderators
                 </div>
-                <div class="card-body">
+                
+                <div class="card-body overflow-auto" style="height: 30rem;">
                     <div class="card" *ngFor="let mod of moderators; index as i;">
                         <div class="card-header" style="background-color:#ead9ff">
-                            Title
+                            Moderator
                         </div>
                         <button (click)="assignToRole(mod?.id, mod?.userName,'User') "type="button" class="btn btn-outline-success btn-sm">Lower</button>
                         <div class="card-body">
@@ -81,5 +81,6 @@
                 </div>
             </div>
         </div>
+        
     </div>
 </div>

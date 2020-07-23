@@ -3,8 +3,7 @@ import {Router} from '@angular/router';
 import { User } from './models/user';
 import { AccountService } from './services/accountService';
 import { NotifierService } from 'angular-notifier';
-
-
+ 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,7 +14,10 @@ export class AppComponent {
 
   static user:User = null;
   static userLoggedIn: boolean = false;
-  notAdmin = true;
+  get user(){
+    return AppComponent.user;
+  }
+
 
   constructor(private router: Router,
      private accountService: AccountService,
@@ -26,13 +28,7 @@ export class AppComponent {
         AppComponent.user = result; 
         AppComponent.userLoggedIn = true;
         console.log("User was identyfied");
-        if (AppComponent.user.role == "User")
-        {
-          this.notAdmin = true;
-        }
-        else{
-          this.notAdmin = false;
-        }
+        
       }, 
         error => {
           AppComponent.user = null; 
@@ -53,7 +49,7 @@ export class AppComponent {
     return AppComponent.user;
   }
   userIsLogged(){
-    return AppComponent.userLoggedIn;
+    return AppComponent.userLoggedIn && AppComponent.user;
   }
   redirectToLogin() {
     this.router.navigate(['./login']);

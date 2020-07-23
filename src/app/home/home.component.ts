@@ -19,10 +19,11 @@ export class HomeComponent implements OnInit {
   postFormInvisible: boolean = true;
   posts: Post[];
   user: User;
-  inversedList: boolean = true;
+  descendingSort: boolean = true;
   submitted:boolean = false;
   edited:boolean = false
   idEdited: number = 0;
+
   
   constructor(private builder:FormBuilder, private postService:PostService,
      private accountService:AccountService,  private notifier:NotifierService, private router:Router) {
@@ -49,12 +50,13 @@ export class HomeComponent implements OnInit {
   changeOrder()
   {
     this.submitted = true;
-    this.inversedList = !this.inversedList;
-
+    this.descendingSort = !this.descendingSort;
+    
     this.posts = this.posts.reverse();
     this.submitted = false;
   }
   updatePostList(){
+    this.descendingSort = true;
     this.postService.getAllPosts().subscribe(result=>
       {this.posts = result; console.log(result);
     }
@@ -111,9 +113,7 @@ export class HomeComponent implements OnInit {
     this.postService.createPost(this.postForm.value).subscribe(result => {
       console.log(result);
       this.submitted = false;
-      if(this.inversedList){this.posts.unshift(result);}
-      else{this.posts.push(result);}
-      
+      this.updatePostList();
       this.notifier.notify("success","Post is published");
       this.postForm.controls["title"].setValue("");
       this.postForm.controls["text"].setValue("");

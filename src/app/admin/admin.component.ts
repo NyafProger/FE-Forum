@@ -57,6 +57,12 @@ export class AdminComponent implements OnInit {
         this.router.navigate(["home"]);
       }
     }
+  isAdmin():boolean{
+    if(this.user)
+      return this.user.role == "Admin"
+    return false;
+
+  }
   updateComments(){
     this.adminService.getAllComments().subscribe(result=>{
       
@@ -119,8 +125,10 @@ export class AdminComponent implements OnInit {
   loadData(){
     this.updateComments();
     this.updatePosts();
-    this.updateUsers();
-    this.updateMods();
+    if (this.isAdmin()){
+      this.updateUsers();
+      this.updateMods();
+    }
   }
   ngOnInit() {
   }
